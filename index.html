@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishnubyte Solutions | Digital & Tech Services</title>
+    <!-- Use Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="Logo.png" type="image/png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary-gold: #fbbf24;
+            /* Amber-400 equivalent */
+            --dark-background: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Custom styles for the 3D Carousel from services.html */
+        .card-transition {
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-style: preserve-3d;
+        }
+
+        #carousel-cards {
+            perspective: 1500px;
+            perspective-origin: center;
+        }
+
+        .text-shadow-custom {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar styling for a darker theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f9f9f9;
+            /* Dark Gray */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fbbf24;
+            /* Gold accent */
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+            /* Darker Gold */
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'v-gold': '#fbbf24',
+                        'v-dark': '#111827',
+                        'v-light': '#f9f9f9',
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Include GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+
+<body class="bg-v-dark text-v-light">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-40 bg-v-light/95 backdrop-blur-sm shadow-lg border-b border-v-gold/30">
+        <nav class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-[83px]"> <!-- ↑ increased from 80px to 83px -->
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img id="fullLogo" src="Full_Logo.svg" alt="Vishnubyte Solutions Logo"
+                        class="h-20 sm:h-20 w-auto filter drop-shadow-lg"
+                        onerror="this.onerror=null;this.src='https://placehold.co/200x50/111827/fbbf24?text=Vishnubyte+Solutions';">
+                </div>
+
+                <!-- Menu -->
+                <div class="hidden md:flex space-x-10 text-lg font-medium text-v-gold relative">
+                    <a href="#home" class="nav-link relative hover:text-v-gold transition-all duration-300">Home</a>
+                    <a href="#services"
+                        class="nav-link relative hover:text-v-gold transition-all duration-300">Services</a>
+                    <a href="#about" class="nav-link relative hover:text-v-gold transition-all duration-300">About
+                        Us</a>
+                    <a href="#contact" class="nav-link relative hover:text-v-gold transition-all duration-300">Contact
+                        Us</a>
+                </div>
+            </div>
+
+            <!-- Animated underline -->
+            <div id="nav-underline"
+                class="absolute bottom-0 left-0 h-[3px] bg-v-gold transition-all duration-500 rounded-full"></div>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative overflow-hidden pt-20 pb-28 md:py-32 bg-white border-b-4 border-v-gold/50">
+        <div class="absolute inset-0 opacity-10 bg-cover bg-center"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-v-dark leading-snug">
+                    <span class="block">Digital Excellence</span>
+                    <span class="block text-v-gold mt-2">Engineered for Tomorrow.</span>
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-400 font-light">
+                    Transforming your vision into reality with cutting-edge Web Development, AI/ML, and Creative
+                    Solutions.
+                </p>
+                <div class="mt-10 flex justify-center space-x-4">
+                    <a href="#services"
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-lg text-v-dark bg-v-gold hover:bg-amber-500 transition duration-300 transform hover:scale-[1.03]">
+                        Explore Services
+                    </a>
+                    <a href="#contact"
+                        class="inline-flex items-center px-6 py-3 border border-v-gold text-base font-medium rounded-xl text-v-gold hover:bg-v-gold/10 transition duration-300">
+                        Get a Quote
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Carousel Section (Adapted from services.html) -->
+    <section id="services" class="w-full py-20 md:py-32 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-v-gold">Our Expertise</h2>
+                <p class="mt-2 text-3xl font-extrabold text-v-dark sm:text-4xl">Comprehensive Digital Solutions</p>
+            </div>
+        </div>
+
+        <!-- 3D Carousel Implementation -->
+        <div class="w-full flex items-center justify-center bg-transparent">
+            <div class="w-full px-4 sm:px-6 lg:px-8 min-w-[350px] max-w-7xl">
+                <div id="carousel-container"
+                    class="relative overflow-hidden h-[550px] cursor-grab active:cursor-grabbing select-none">
+                    <div id="carousel-cards"
+                        class="absolute top-0 left-0 w-full h-full flex items-center justify-center"></div>
+
+                    <!-- Dots -->
+                    <div id="dots"
+                        class="absolute bottom-6 left-0 right-0 flex justify-center items-center space-x-3 z-30"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section with Glowing Cards in Grid -->
+    <section id="portfolio" class="py-20 md:py-32 bg-white text-v-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-v-gold">Our Work</h2>
+            <p class="mt-2 text-3xl font-extrabold sm:text-4xl">Portfolio Highlights</p>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
+            <!-- Glowing Card 1 -->
+            <div
+                class="relative p-6 rounded-2xl bg-yellow-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#fbbf24] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 1</h3>
+                <p class="text-black-200 text-center">Responsive and modern website with cutting-edge technologies.</p>
+            </div>
+
+            <!-- Glowing Card 2 -->
+            <div
+                class="relative p-6 rounded-2xl bg-blue-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#3b82f6] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 2</h3>
+                <p class="text-black-200 text-center">Cross-platform mobile app with excellent UX/UI.</p>
+            </div>
+
+            <!-- Glowing Card 3 -->
+            <div
+                class="relative p-6 rounded-2xl bg-green-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#10b981] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 3</h3>
+                <p class="text-black-200 text-center">AI/ML solutions for data analysis & automation.</p>
+            </div>
+
+            <!-- Glowing Card 4 -->
+            <div
+                class="relative p-6 rounded-2xl bg-purple-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#a855f7] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 4</h3>
+                <p class="text-black-200 text-center">Creative graphic design & branding materials.</p>
+            </div>
+
+            <!-- Glowing Card 5 -->
+            <div
+                class="relative p-6 rounded-2xl bg-pink-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#f472b6] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 5</h3>
+                <p class="text-black-200 text-center">High-impact video production for social media.</p>
+            </div>
+
+            <!-- Glowing Card 6 -->
+            <div
+                class="relative p-6 rounded-2xl bg-orange-100 border border-gray-700 shadow-lg transition-all duration-500 hover:shadow-[0_0_25px_#fbbf24] hover:scale-105">
+                <h3 class="text-xl font-bold mb-2 text-center">Project 6</h3>
+                <p class="text-black-200 text-center">Custom web solutions & applications for businesses.</p>
+            </div>
+        </div>
+
+        <!-- View All Button -->
+        <div class="mt-12 text-center">
+            <a href="#portfolio"
+                class="inline-flex items-center px-8 py-3 bg-v-gold text-v-dark font-medium rounded-xl shadow-lg hover:bg-amber-500 transition duration-300">
+                View All Projects
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 md:py-32 bg-white text-v-dark border-t-4 border-v-gold/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-v-gold">About Us</h2>
+                    <p class="mt-2 text-3xl font-extrabold sm:text-4xl">Who We Are</p>
+                    <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                        Vishnubyte Solutions is a cutting-edge digital and tech service provider, specializing
+                        in web
+                        and app development, AI/ML solutions, creative design, and innovative software
+                        solutions. Our
+                        mission is to help businesses achieve digital excellence through innovation, design, and
+                        technology.
+                    </p>
+                    <ul class="mt-6 space-y-3 text-gray-600">
+                        <li class="flex items-center"><i data-lucide="check-circle"
+                                class="w-5 h-5 text-v-gold mr-2"></i> Expert Web & Mobile Development</li>
+                        <li class="flex items-center"><i data-lucide="check-circle"
+                                class="w-5 h-5 text-v-gold mr-2"></i> Creative UI/UX & Graphic Design</li>
+                        <li class="flex items-center"><i data-lucide="check-circle"
+                                class="w-5 h-5 text-v-gold mr-2"></i> AI & Machine Learning Solutions</li>
+                        <li class="flex items-center"><i data-lucide="check-circle"
+                                class="w-5 h-5 text-v-gold mr-2"></i> Video & Reel Production</li>
+                    </ul>
+                    <div class="mt-8">
+                        <a href="#contact"
+                            class="inline-flex items-center px-8 py-3 bg-v-gold text-v-dark font-medium rounded-xl shadow-lg hover:bg-amber-500 transition duration-300">
+                            Work With Us
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Image / Illustration -->
+                <div class="relative">
+                    <img src="aboutus.webp" alt="About Vishnubyte Solutions"
+                        class="w-full h-auto rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 bg-white border-t-4 border-v-gold/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-v-gold">Ready to Start?</h2>
+                <p class="mt-2 text-3xl font-extrabold text-v-dark sm:text-4xl">Let's Build Something Great.</p>
+                <p class="mt-4 text-lg text-gray-400">
+                    Tell us about your project, and we'll craft a customized solution to meet your goals.
+                </p>
+            </div>
+            <form class="space-y-6 bg-v-light p-8 md:p-12 rounded-2xl shadow-2xl border border-v-gold/20">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-v-dark mb-1">Full Name</label>
+                    <input type="text" id="name" name="name" required
+                        class="mt-1 block w-full px-4 py-3 rounded-xl border-gray-700 bg-v-light text-v-dark focus:ring-v-gold focus:border-v-gold transition duration-200 shadow-inner"
+                        placeholder="Your Name">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-v-dark mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required
+                        class="mt-1 block w-full px-4 py-3 rounded-xl border-gray-700 bg-v-light text-v-dark focus:ring-v-gold focus:border-v-gold transition duration-200 shadow-inner"
+                        placeholder="you@example.com">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-v-dark mb-1">Project
+                        Details</label>
+                    <textarea id="message" name="message" rows="4" required
+                        class="mt-1 block w-full px-4 py-3 rounded-xl border-gray-700 bg-v-light text-v-dark focus:ring-v-gold focus:border-v-gold transition duration-200 shadow-inner"
+                        placeholder="I need a new e-commerce website with a custom payment gateway..."></textarea>
+                </div>
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-lg text-v-dark bg-v-gold hover:bg-amber-500 transition duration-300 transform hover:scale-[1.01]">
+                        Send Message
+                        <i data-lucide="send" class="ml-3 w-4 h-4"></i>
+                    </button>
+                </div>
+            </form>
+            <p id="form-message" class="mt-4 text-center text-sm text-gray-400 hidden">Thank you for your
+                message! We
+                will get back to you shortly.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-v-gold/30">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div class="mb-4 md:mb-0">
+                    <img src="Logo.png" alt="Vishnubyte V Logo" class="h-12 w-auto inline-block mr-3"
+                        onerror="this.onerror=null;this.src='https://placehold.co/32x32/111827/fbbf24?text=V';">
+                    <p class="text-sm text-black inline-block align-middle">&copy; 2024 Vishnubyte Solutions.
+                        All rights
+                        reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="twitter"
+                            class="w-5 h-5"></i></a>
+                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="linkedin"
+                            class="w-5 h-5"></i></a>
+                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="mail"
+                            class="w-5 h-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide Icons
+            lucide.createIcons();
+
+            // Mobile menu toggle logic
+            const navLinks = document.querySelectorAll('.nav-link');
+            const underline = document.getElementById('nav-underline');
+
+            function setUnderline(link) {
+                const rect = link.getBoundingClientRect();
+                const navRect = link.closest('nav').getBoundingClientRect();
+                underline.style.width = rect.width + 'px';
+                underline.style.left = rect.left - navRect.left + 'px';
+            }
+
+            // Move underline on hover
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', () => setUnderline(link));
+            });
+
+            // Highlight and underline based on scroll position
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    if (pageYOffset >= sectionTop) current = section.getAttribute('id');
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-v-gold');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('text-v-gold');
+                        setUnderline(link);
+                    }
+                });
+            });
+
+            // Initialize underline on page load
+            window.addEventListener('load', () => {
+                const activeLink = document.querySelector('.nav-link[href="#home"]');
+                setUnderline(activeLink);
+            });
+
+            // Simple form submission handler (prevent default action and show success message)
+            const contactForm = document.querySelector('#contact form');
+            const formMessage = document.getElementById('form-message');
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                contactForm.style.display = 'none';
+                formMessage.style.display = 'block';
+                // Reset to visible after 5 seconds (simulated)
+                setTimeout(() => {
+                    contactForm.style.display = 'block';
+                    formMessage.style.display = 'none';
+                    contactForm.reset();
+                }, 5000);
+            });
+
+
+            // --- 3D Carousel Logic (Adapted from services.html) ---
+
+            const serviceItems = [
+                {
+                    id: 1,
+                    title: "Web Development",
+                    icon: "laptop",
+                    description: "Building responsive, secure, and high-performance websites and web applications using modern full-stack technologies.",
+                    color: "bg-red-600/70"
+                },
+                {
+                    id: 2,
+                    title: "App Development",
+                    icon: "smartphone",
+                    description: "Creating powerful native and cross-platform mobile applications for iOS and Android, focusing on user experience.",
+                    color: "bg-blue-600/70"
+                },
+                {
+                    id: 3,
+                    title: "UI/UX Designing",
+                    icon: "palette",
+                    description: "Crafting intuitive, accessible, and visually stunning user interfaces and experiences that drive engagement.",
+                    color: "bg-purple-600/70"
+                },
+                {
+                    id: 4,
+                    title: "AI/ML Solutions",
+                    icon: "brain-circuit",
+                    description: "Implementing intelligent solutions for data analysis, business automation, and building predictive modeling tools.",
+                    color: "bg-green-600/70"
+                },
+                {
+                    id: 5,
+                    title: "Graphic Designing",
+                    icon: "image",
+                    description: "Designing compelling visual content, comprehensive branding packages, and marketing materials for all platforms.",
+                    color: "bg-yellow-600/70"
+                },
+                {
+                    id: 6,
+                    title: "Reel Making",
+                    icon: "film",
+                    description: "Producing high-impact, short-form video content (Reels) optimized for viral social media performance.",
+                    color: "bg-pink-600/70"
+                },
+                {
+                    id: 7,
+                    title: "Video Editing",
+                    icon: "video",
+                    description: "Professional post-production services including corporate videos, promotional clips, and feature-length content.",
+                    color: "bg-indigo-600/70"
+                }
+            ];
+
+            const container = document.getElementById("carousel-cards");
+            const dotsContainer = document.getElementById("dots");
+            const rotateInterval = 5000;
+            const minSwipeDistance = 60;
+            const autoRotate = true;
+
+            let active = 0;
+            let isHovering = false;
+            let isDragging = false;
+            let startX = 0;
+            let currentX = 0;
+
+            // Create cards
+            serviceItems.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "absolute top-0 w-full max-w-sm sm:max-w-md card-transition cursor-pointer rounded-2xl";
+                card.setAttribute('data-index', index);
+                card.addEventListener('click', (e) => {
+                    // Only navigate if it's the active card
+                    if (index !== active) {
+                        e.stopPropagation();
+                        setActive(index);
+                    }
+                });
+
+                // Get a placeholder image for the card background
+                const placeholderImageUrl = `https://placehold.co/400x200/1f2937/fbbf24?text=${item.title.replace(/\s/g, '+')}`;
+
+                card.innerHTML = `
+                    <div class="overflow-hidden bg-gray-900 border border-gold/30 h-[500px] hover:shadow-2xl hover:shadow-v-gold/20 flex flex-col rounded-2xl transition duration-300 transform">
+                        <div class="relative ${item.color} p-8 flex items-center justify-center h-48 overflow-hidden rounded-t-2xl">
+                            <div class="absolute inset-0 opacity-10" style="background-image: url('${placeholderImageUrl}'); background-size:cover; background-position:center;"></div>
+                            <div class="relative z-10 text-center text-v-light">
+                                <i data-lucide="${item.icon}" class="w-12 h-12 mx-auto mb-3 text-v-gold filter drop-shadow-md"></i>
+                                <h3 class="text-3xl font-bold text-shadow-custom">${item.title}</h3>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow bg-v-light">
+                            <p class="text-gray-400 text-lg flex-grow font-dark">${item.description}</p>
+                            <div class="mt-4">
+                                <a href="#contact" class="text-v-gold flex items-center font-medium hover:underline group relative transition duration-300">
+                                    <span class="relative z-10">Start Your Project</span>
+                                    <i data-lucide="arrow-right" class="ml-2 w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>`;
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+            const cards = Array.from(container.children);
+
+            // Create dots
+            serviceItems.forEach((_, i) => {
+                const dot = document.createElement("button");
+                dot.className = "w-3 h-3 rounded-full transition-all duration-300 " + (i === 0 ? "bg-v-gold w-6" : "bg-gray-700 hover:bg-gray-600");
+                dot.addEventListener("click", () => setActive(i));
+                dotsContainer.appendChild(dot);
+            });
+
+            function updateCards() {
+                cards.forEach((card, i) => {
+                    const offset = (i - active + serviceItems.length) % serviceItems.length;
+
+                    // Reset common styles
+                    card.style.opacity = 0;
+                    card.style.pointerEvents = "none";
+                    card.style.zIndex = 1;
+
+                    // Active card (Center)
+                    if (i === active) {
+                        card.style.transform = "translateX(0) scale(1) rotateY(0deg)";
+                        card.style.opacity = 1;
+                        card.style.filter = "none";
+                        card.style.pointerEvents = "auto";
+                        card.style.zIndex = 10;
+                    }
+                    // Card to the Right (Next in line)
+                    else if (offset === 1 || (offset === -serviceItems.length + 1)) {
+                        card.style.transform = "translateX(50%) rotateY(-20deg) scale(0.9)";
+                        card.style.opacity = 0.6;
+                        card.style.zIndex = 5;
+                    }
+                    // Card to the Left (Previous in line)
+                    else if (offset === serviceItems.length - 1 || offset === -1) {
+                        card.style.transform = "translateX(-50%) rotateY(20deg) scale(0.9)";
+                        card.style.opacity = 0.6;
+                        card.style.zIndex = 5;
+                    }
+                    // Other cards (Hidden)
+                    else {
+                        card.style.opacity = 0;
+                        card.style.transform = "translateX(0) scale(0.8)";
+                        card.style.zIndex = 1;
+                    }
+                });
+
+                // Update dots
+                Array.from(dotsContainer.children).forEach((dot, i) => {
+                    dot.className = "w-3 h-3 rounded-full transition-all duration-300 " +
+                        (i === active ? "bg-v-gold w-6" : "bg-gray-700 hover:bg-black-600");
+                });
+
+                lucide.createIcons(); // Re-create icons on card update
+            }
+
+            function setActive(i) {
+                active = (i + serviceItems.length) % serviceItems.length;
+                updateCards();
+            }
+
+            // Auto rotation
+            let rotationTimer = setInterval(() => {
+                if (autoRotate && !isHovering && !isDragging) {
+                    active = (active + 1) % serviceItems.length;
+                    updateCards();
+                }
+            }, rotateInterval);
+
+            // Pause on hover
+            container.addEventListener("mouseenter", () => { isHovering = true; clearInterval(rotationTimer); });
+            container.addEventListener("mouseleave", () => {
+                isHovering = false;
+                if (autoRotate) {
+                    rotationTimer = setInterval(() => {
+                        if (!isHovering && !isDragging) {
+                            active = (active + 1) % serviceItems.length;
+                            updateCards();
+                        }
+                    }, rotateInterval);
+                }
+            });
+
+
+            // Drag & Swipe Logic
+            const handleStart = (x) => {
+                isDragging = true;
+                startX = x;
+                currentX = x;
+                clearInterval(rotationTimer);
+                container.classList.add('cursor-grabbing');
+            };
+            const handleMove = (x) => { if (isDragging) currentX = x; };
+            const handleEnd = () => {
+                if (!isDragging) return;
+                container.classList.remove('cursor-grabbing');
+
+                const diff = startX - currentX;
+                if (Math.abs(diff) > minSwipeDistance) {
+                    if (diff > 0) setActive(active + 1); // Swipe Left = Next
+                    else setActive(active - 1); // Swipe Right = Previous
+                }
+
+                isDragging = false;
+                if (autoRotate && !isHovering) {
+                    rotationTimer = setInterval(() => {
+                        if (!isHovering && !isDragging) {
+                            active = (active + 1) % serviceItems.length;
+                            updateCards();
+                        }
+                    }, rotateInterval);
+                }
+            };
+
+            // Mouse Events
+            container.addEventListener("mousedown", (e) => handleStart(e.clientX));
+            window.addEventListener("mousemove", (e) => handleMove(e.clientX));
+            window.addEventListener("mouseup", handleEnd);
+
+            // Touch Events
+            container.addEventListener("touchstart", (e) => handleStart(e.touches[0].clientX));
+            container.addEventListener("touchmove", (e) => handleMove(e.touches[0].clientX));
+            container.addEventListener("touchend", handleEnd);
+
+            // Initial render
+            updateCards();
+        });
+    </script>
+</body>
+
+</html>
