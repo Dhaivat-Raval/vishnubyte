@@ -20,6 +20,18 @@
             --dark-background: #f9f9f9;
         }
 
+        #grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1), transparent 70%);
+        }
+
+
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
@@ -83,6 +95,9 @@
 
 <body class="bg-v-dark text-v-light">
 
+    <!-- Background Canvas -->
+    <canvas id="grid-background"></canvas>
+
     <!-- Navbar -->
     <header class="sticky top-0 z-40 bg-v-light/95 backdrop-blur-sm shadow-lg border-b border-v-gold/30">
         <nav class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,7 +129,7 @@
 
 
     <!-- Hero Section -->
-    <section id="hero" class="relative overflow-hidden pt-20 pb-28 md:py-32 bg-white border-b-4 border-v-gold/50">
+    <section id="hero" class="relative overflow-hidden pt-20 pb-28 md:py-32 bg-white">
         <div class="absolute inset-0 opacity-10 bg-cover bg-center"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center">
@@ -227,7 +242,7 @@
     </section>
 
     <!-- About Us Section -->
-    <section id="about" class="py-20 md:py-32 bg-white text-v-dark border-t-4 border-v-gold/50">
+    <section id="about" class="py-20 md:py-32 bg-white text-v-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <!-- Text Content -->
@@ -272,7 +287,7 @@
 
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 md:py-32 bg-white border-t-4 border-v-gold/50">
+    <section id="contact" class="py-20 md:py-32 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-sm font-semibold uppercase tracking-wider text-v-gold">Ready to Start?</h2>
@@ -302,10 +317,9 @@
                         placeholder="I need a new e-commerce website with a custom payment gateway..."></textarea>
                 </div>
                 <div class="pt-4">
-                    <button type="submit"
-                        class="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-lg text-v-dark bg-v-gold hover:bg-amber-500 transition duration-300 transform hover:scale-[1.01]">
-                        Send Message
-                        <i data-lucide="send" class="ml-3 w-4 h-4"></i>
+                    <button onclick="sendWhatsAppMessage()"
+                        class="w-full px-6 py-3 bg-v-gold text-v-dark rounded-xl shadow-lg hover:bg-amber-500 transition duration-300">
+                        Send message
                     </button>
                 </div>
             </form>
@@ -322,17 +336,19 @@
                 <div class="mb-4 md:mb-0">
                     <img src="Logo.png" alt="Vishnubyte V Logo" class="h-12 w-auto inline-block mr-3"
                         onerror="this.onerror=null;this.src='https://placehold.co/32x32/111827/fbbf24?text=V';">
-                    <p class="text-sm text-black inline-block align-middle">&copy; 2024 Vishnubyte Solutions.
+                    <p class="text-sm text-black inline-block align-middle">&copy; 2025 Vishnubyte Solutions.
                         All rights
                         reserved.</p>
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="twitter"
+                    <a href="https://www.instagram.com/vishnubytesolutions/"
+                        class="text-black hover:text-v-gold transition duration-200"><i data-lucide="instagram"
                             class="w-5 h-5"></i></a>
-                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="linkedin"
+                    <a href="mailto:vishnubytesolutions@gmail.com"
+                        class="text-black hover:text-v-gold transition duration-200"><i data-lucide="mail"
                             class="w-5 h-5"></i></a>
-                    <a href="#" class="text-black hover:text-v-gold transition duration-200"><i data-lucide="mail"
-                            class="w-5 h-5"></i></a>
+                    <a href="tel:+917984027615" class="text-black hover:text-v-gold transition duration-200"><i
+                            data-lucide="phone" class="w-5 h-5"></i></a>F
                 </div>
             </div>
         </div>
@@ -340,6 +356,104 @@
 
     <!-- JavaScript Logic -->
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("grid-background");
+            const ctx = canvas.getContext("2d");
+
+            const gridSize = 50;
+            const trail = [];
+            const trailLength = 5;
+            const idleSpeed = 0.2;
+            const glow = true;
+            const glowRadius = 20;
+            const idleRandomCount = 5;
+            const gridColor = "#e5e7eb";
+            const effectColor = "rgba(0, 0, 0, 0.3)";
+            const darkGridColor = "#27272a";
+            const darkEffectColor = "rgba(255, 255, 255, 0.4)";
+
+            let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+            const resizeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+            resizeCanvas();
+            window.addEventListener("resize", resizeCanvas);
+
+            const idleTargets = Array.from({ length: idleRandomCount }, () => ({
+                x: Math.floor(Math.random() * (canvas.width / gridSize)),
+                y: Math.floor(Math.random() * (canvas.height / gridSize)),
+            }));
+
+            const idlePositions = idleTargets.map(p => ({ ...p }));
+            let lastMouse = Date.now();
+
+            window.addEventListener("mousemove", e => {
+                const snappedX = Math.floor(e.clientX / gridSize);
+                const snappedY = Math.floor(e.clientY / gridSize);
+                const last = trail[0];
+                if (!last || last.x !== snappedX || last.y !== snappedY) {
+                    trail.unshift({ x: snappedX, y: snappedY });
+                    if (trail.length > trailLength) trail.pop();
+                }
+                lastMouse = Date.now();
+            });
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Grid lines
+                ctx.strokeStyle = isDarkMode ? darkGridColor : gridColor;
+                for (let x = 0; x < canvas.width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+
+                // Idle effect
+                if (Date.now() - lastMouse > 2000) {
+                    idlePositions.forEach((pos, i) => {
+                        const t = idleTargets[i];
+                        pos.x += (t.x - pos.x) * idleSpeed;
+                        pos.y += (t.y - pos.y) * idleSpeed;
+                        if (Math.abs(t.x - pos.x) < 0.01 && Math.abs(t.y - pos.y) < 0.01) {
+                            idleTargets[i] = {
+                                x: Math.floor(Math.random() * (canvas.width / gridSize)),
+                                y: Math.floor(Math.random() * (canvas.height / gridSize)),
+                            };
+                        }
+                        trail.unshift({ x: Math.round(pos.x), y: Math.round(pos.y) });
+                        if (trail.length > trailLength * idleRandomCount) trail.pop();
+                    });
+                }
+
+                // Draw glow trail
+                const glowColor = isDarkMode ? darkEffectColor : effectColor;
+                trail.forEach((cell, idx) => {
+                    const alpha = 1 - idx / trail.length;
+                    const rgba = glowColor.replace(/[\d.]+\)$/g, `${alpha})`);
+                    ctx.fillStyle = rgba;
+                    if (glow) {
+                        ctx.shadowColor = rgba;
+                        ctx.shadowBlur = glowRadius;
+                    } else ctx.shadowBlur = 0;
+                    ctx.fillRect(cell.x * gridSize, cell.y * gridSize, gridSize, gridSize);
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize Lucide Icons
             lucide.createIcons();
@@ -632,6 +746,44 @@
             // Initial render
             updateCards();
         });
+
+        const contactForm = document.getElementById('contactForm');
+        const sendBtn = document.getElementById('sendBtn');
+        const formMessage = document.getElementById('form-message');
+
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Simple email validation
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (name && emailValid && message) {
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                sendBtn.disabled = true;
+                sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Validate on input
+        contactForm.addEventListener('input', validateForm);
+
+        // WhatsApp message sending
+        sendBtn.addEventListener('click', () => {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const whatsappNumber = '919876543210'; // replace with your WhatsApp number
+            const text = `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
+            const url = `https://wa.me/${whatsappNumber}?text=${text}`;
+
+            window.open(url, '_blank');
+            formMessage.classList.remove('hidden');
+        });
+
     </script>
 </body>
 
